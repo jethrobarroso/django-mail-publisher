@@ -32,16 +32,35 @@ EMAIL_PORT=<SMTP port e.g 465>
 EMAIL_HOST_USER=<SMTP username>
 EMAIL_HOST_PASSWORD=<mail username>
 EMAIL_FROM=<from email address>
-```
+
+```console
 Ensure you have the database created as per DB name specified in the `.env` file located in your project's root folder, and the run the migrations:
-```
+```console
+
 py manage.py migrate
-```
+
+```console
 Create a super user. This user will be used to authenticate requests made to the API:
-```
+
+```console
 py manage.py createsuperuser
 ```
+
 Finally, start the server:
-```
+
+```console
 py manage.py runserver
+```
+
+## How to use
+
+The project exposes `POST /mails/` endpoint where the mail information will be passed through into the request body. Basic authentication will be used upon request, so a user needs to be created.
+
+Mails won't be sent immediately. They are queued and it's up to the user of the project to setup cron jobs that will send the queued mails in batches.
+
+Sample of the cron jobs that can be used to send the mails in batches and also perform a cleanup after specified amount of days:
+
+```console
+* * * * * (cd $PROJECT; python manage.py send_queued_mail --processes=1 >> $PROJECT/cron_mail.log 2>&1)
+0 1 * * * (cd $PROJECT; python manage.py cleanup_mail --days=30 --delete-attachments >> $PROJECT/cron_mail_cleanup.log 2>&1)
 ```
