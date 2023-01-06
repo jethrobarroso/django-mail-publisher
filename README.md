@@ -19,7 +19,9 @@ py -m pip install -r .\requirements.txt
 For development, create a `.env` file in you project's root directory, which will be used for development purposes. In you production environment, these should be configured as environment variables on the host machine. Many of these key value pairs can be configured straight in the `settings.py` file, but sensitive information like passwords and tokens should at least be kept as environment variables or even better, stored in some sort of password vault. The following key value pairs will be used in your environment:
 ```
 # Django
+ENVIRONMENT=<your host environment e.g development>
 SECRET=<django generated secret>
+ALLOWED_HOSTS=<space separated hosts>
 
 # DB settings
 DB_USER=<DB username>
