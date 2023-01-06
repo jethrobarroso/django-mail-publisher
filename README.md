@@ -16,7 +16,7 @@ Install python packages:
 ```
 py -m pip install -r .\requirements.txt
 ```
-For development, create a `.env` file in you project's root directory, which will be used for development purposes. The following key value pairs will be used in your environment:
+For development, create a `.env` file in you project's root directory, which will be used for development purposes. In you production environment, these should be configured as environment variables on the host machine. Many of these key value pairs can be configured straight in the `settings.py` file, but sensitive information like passwords and tokens should at least be kept as environment variables or even better, stored in some sort of password vault. The following key value pairs will be used in your environment:
 ```
 # Django
 SECRET=<django generated secret>
@@ -32,14 +32,14 @@ EMAIL_PORT=<SMTP port e.g 465>
 EMAIL_HOST_USER=<SMTP username>
 EMAIL_HOST_PASSWORD=<mail username>
 EMAIL_FROM=<from email address>
+```
 
-```console
 Ensure you have the database created as per DB name specified in the `.env` file located in your project's root folder, and the run the migrations:
-```console
 
+```console
 py manage.py migrate
+```
 
-```console
 Create a super user. This user will be used to authenticate requests made to the API:
 
 ```console
@@ -51,6 +51,9 @@ Finally, start the server:
 ```console
 py manage.py runserver
 ```
+
+**NOTE**
+Remember to run `python manage.py collectstatic` in you production environment.
 
 ## How to use
 
