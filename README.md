@@ -5,19 +5,26 @@ This is a simple mail publisher that exposes an API that will queue and publish 
 ## Getting Started
 
 Create a new env:
-```
+
+```console
 py -m venv .venv
 ```
+
 Activate the virtual environment when in the project's root directory
-```
+
+```console
 .\.venv\Scripts\activate
 ```
+
 Install python packages:
-```
+
+```console
 py -m pip install -r .\requirements.txt
 ```
+
 For development, create a `.env` file in you project's root directory, which will be used for development purposes. In you production environment, these should be configured as environment variables on the host machine. Many of these key value pairs can be configured straight in the `settings.py` file, but sensitive information like passwords and tokens should at least be kept as environment variables or even better, stored in some sort of password vault. The following key value pairs will be used in your environment:
-```
+
+  ```text
 # Django
 ENVIRONMENT=<your host environment e.g development>
 SECRET=<django generated secret>

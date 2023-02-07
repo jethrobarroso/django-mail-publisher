@@ -22,22 +22,38 @@ class MailPublisher(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def post(self, request):
-        serializer = MailPublisherSerializer(data=request.data)
-
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
+        data = request.data
         files = request.FILES.getlist("attachments")
         attachments = {}
 
         for file in files:
             attachments[file.name] = ContentFile(file.read())
 
-        mail.send(
-            serializer.data.get("to_email"),
+        incoming_mails = data["to_email"]
+        mail_type = type(incoming_mails)
+        
+        
+        if mail_type is str:
+            incoming_mails = [incoming_mails]
+        
+        
+        if mail_type not in (list, str):
+            return Response({"to_email": "Should be a string or a list of emails"}, status=status.HTTP_400_BAD_REQUEST)
+
+        data["to_email"] = incoming_mails
+        serializer = MailPublisherSerializer(data=data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+        for incoming_mail in incoming_mails:
+            mail.send(
+            incoming_mail,
             FROM_EMAIL,
             subject=serializer.data.get("subject"),
             html_message=serializer.data.get("message"),
+            cc=serializer.data.get("cc"),
+            bcc=serializer.data.get("bcc"),
             attachments=attachments,
         )
 
