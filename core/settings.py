@@ -19,6 +19,8 @@ DEBUG = False if getenv("ENVIRONMENT") == "production" else True
 
 ALLOWED_HOSTS = getenv("ALLOWED_HOSTS").split()
 
+CORS_ALLOWED_ORIGINS = getenv("CORS_ALLOWED_ORIGINS").split()
+
 DATA_UPLOAD_MAX_MEMORY_SIZE = 50000000
 
 
@@ -31,6 +33,7 @@ INSTALLED_APPS = [
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
+    "corsheaders",
     "rest_framework",
     "post_office",
 ]
@@ -42,6 +45,7 @@ MIDDLEWARE = [
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
+    'corsheaders.middleware.CorsMiddleware',
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 

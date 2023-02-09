@@ -22,7 +22,7 @@ class MailPublisher(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def post(self, request):
-        data = request.data
+        data = {**request.data}
         files = request.FILES.getlist("attachments")
         attachments = {}
 
